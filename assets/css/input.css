@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  /* Your brand colors */
+  --color-brandDark: #0E1117;
+  --color-brandCard: #11141B;
+  --color-brandBorder: #1E232D;
+}
+
+/* Dark mode overrides — this is the key! */
+@layer base {
+  .dark {
+    --color-white: #0E1117;
+    --color-slate-50: #0A0D12;
+    --color-slate-100: #0E1117;
+    --color-slate-200: #1E232D;
+    --color-slate-300: #2D333B;
+    --color-slate-400: #94A3B8;
+    --color-slate-500: #64748B;
+    --color-slate-600: #475569;
+    --color-slate-700: #334155;
+    --color-slate-800: #1E293B;
+    --color-slate-900: #0F172A;
+    --color-slate-950: #020617;
+    --color-black: #0E1117;
+    --bg-primary: #0E1117;
+    --bg-secondary: #11141B;
+    --bg-tertiary: #0A0D12;
+    --border-color: #1E232D;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+  }
+  
+  /* Light mode defaults */
+  :root {
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F8FAFC;
+    --bg-tertiary: #F1F5F9;
+    --border-color: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+  }
+}
+
+@source "../../*.php";
+@source "../../components/**/*.php";
+@source "../../api/**/*.php";

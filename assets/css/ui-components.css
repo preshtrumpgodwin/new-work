@@ -1,0 +1,191 @@
+/**
+ * Zetaphase EduCloud — shared UI components (assets/css/ui-components.css)
+ * Styles for assets/js/ui.js (toasts, confirm dialog, empty states).
+ *
+ * Hand-written plain CSS on purpose — it does NOT go through the Tailwind
+ * build, so it works immediately on any page with just:
+ *   <link rel="stylesheet" href="assets/css/ui-components.css">
+ *   <script src="assets/js/ui.js"></script>
+ *
+ * Reuses the same theme variables already set by every page's inline
+ * <style> block (--bg-secondary, --bg-tertiary, --border-color,
+ * --text-primary, --text-secondary). Falls back to sane defaults if a
+ * page hasn't defined them. Accent color: pages that already compute a
+ * per-school theme color can optionally set --zui-accent to match; it
+ * defaults to indigo otherwise, so nothing breaks if it's left unset.
+ */
+
+:root {
+    --zui-accent: var(--brand-color, #4F46E5);
+    --zui-bg-secondary: var(--bg-secondary, #11141B);
+    --zui-bg-tertiary: var(--bg-tertiary, #0A0D12);
+    --zui-border: var(--border-color, #1E232D);
+    --zui-text-primary: var(--text-primary, #F1F5F9);
+    --zui-text-secondary: var(--text-secondary, #94A3B8);
+}
+
+/* ---------------------------------------------------------------- */
+/* Toasts                                                            */
+/* ---------------------------------------------------------------- */
+.zui-toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 22rem;
+    width: calc(100% - 2rem);
+    pointer-events: none;
+}
+
+.zui-toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    background: var(--zui-bg-secondary);
+    border: 1px solid var(--zui-border);
+    color: var(--zui-text-primary);
+    border-radius: 0.9rem;
+    padding: 0.75rem 0.85rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    opacity: 0;
+    transform: translateX(1rem);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.zui-toast-in { opacity: 1; transform: translateX(0); }
+.zui-toast-out { opacity: 0; transform: translateX(1rem); }
+
+.zui-toast-icon { width: 1rem; height: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+.zui-toast-msg { flex: 1; word-break: break-word; }
+.zui-toast-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--zui-text-secondary);
+    cursor: pointer;
+    padding: 0.1rem;
+    line-height: 0;
+}
+.zui-toast-close:hover { color: var(--zui-text-primary); }
+
+.zui-toast-success { border-color: rgba(16, 185, 129, 0.35); }
+.zui-toast-success .zui-toast-icon { color: #10B981; }
+.zui-toast-error { border-color: rgba(244, 63, 94, 0.35); }
+.zui-toast-error .zui-toast-icon { color: #F43F5E; }
+.zui-toast-warning { border-color: rgba(245, 158, 11, 0.35); }
+.zui-toast-warning .zui-toast-icon { color: #F59E0B; }
+.zui-toast-info { border-color: rgba(99, 102, 241, 0.35); }
+.zui-toast-info .zui-toast-icon { color: var(--zui-accent); }
+
+/* ---------------------------------------------------------------- */
+/* Themed confirm dialog                                             */
+/* ---------------------------------------------------------------- */
+.zui-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+.zui-dialog-in { opacity: 1; }
+.zui-dialog-out { opacity: 0; }
+
+.zui-dialog {
+    background: var(--zui-bg-secondary);
+    border: 1px solid var(--zui-border);
+    border-radius: 1.1rem;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 22rem;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    transform: translateY(0.5rem) scale(0.98);
+    transition: transform 0.15s ease;
+}
+.zui-dialog-in .zui-dialog { transform: translateY(0) scale(1); }
+
+.zui-dialog-title {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--zui-text-primary);
+    margin-bottom: 0.4rem;
+}
+.zui-dialog-msg {
+    font-size: 0.78rem;
+    color: var(--zui-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+}
+.zui-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+}
+.zui-dialog-btn {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.55rem 1rem;
+    border-radius: 0.7rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: filter 0.15s ease, background-color 0.15s ease;
+}
+.zui-dialog-cancel {
+    background: var(--zui-bg-tertiary);
+    border-color: var(--zui-border);
+    color: var(--zui-text-primary);
+}
+.zui-dialog-cancel:hover { filter: brightness(1.1); }
+.zui-dialog-confirm {
+    background: var(--zui-accent);
+    color: #fff;
+}
+.zui-dialog-confirm:hover { filter: brightness(1.12); }
+.zui-dialog-danger {
+    background: #E11D48;
+    color: #fff;
+}
+.zui-dialog-danger:hover { filter: brightness(1.12); }
+
+/* ---------------------------------------------------------------- */
+/* Empty state                                                       */
+/* ---------------------------------------------------------------- */
+.zui-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    color: var(--zui-text-secondary);
+}
+.zui-empty-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+    stroke-width: 1.5;
+}
+.zui-empty-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--zui-text-primary);
+    margin-bottom: 0.25rem;
+}
+.zui-empty-msg {
+    font-size: 0.72rem;
+    max-width: 20rem;
+}
+
+@media (max-width: 480px) {
+    .zui-toast-container { top: 0.5rem; right: 0.5rem; left: 0.5rem; max-width: none; }
+}
